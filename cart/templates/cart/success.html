@@ -1,0 +1,119 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}Establecer Información del Envío - Solid Steel{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/client_style.css' %}">
+<style>
+  /* Estilo para centrar el contenedor en la pantalla */
+  .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top:15px;
+      height: 70vh;
+  }
+
+  .container-confirmacion {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+  }
+
+  .check-icon {
+      color: #28a745; /* Color verde para éxito */
+      margin-bottom: 20px;
+  }
+
+  .title-success {
+      font-size: 24px;
+      font-weight: bold;
+      color: #28a745;
+      margin-bottom: 20px;
+  }
+
+  .table th {
+      text-align: left;
+      font-weight: bold;
+  }
+
+  .table td {
+      text-align: right;
+  }
+
+  /* Estilo para el botón de finalizar */
+  .finalizar-btn {
+      background-color: #28a745;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  .finalizar-btn:hover {
+      background-color: #218838;
+  }
+  
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="main-container">
+    <div class="container-confirmacion">
+        <div class="text-center">
+            <h1 class="title-success">Ticket de compra</h1>
+            <div class="check-icon">
+                <i class="fas fa-check-circle" style="font-size: 100px;"></i>
+            </div>        
+        </div>
+        <table class="table mt-4">
+            <tbody>
+                <tr>
+                    <th>Exitosa</th>
+                    <td>{{ status }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre del comercio</th>
+                    <td>Cobro de Saldo Metal Steel</td>
+                </tr>
+                <tr>
+                    <th>Fecha de pago</th>
+                    <td>{{ payment_date|date:"m/d/Y" }}</td>
+                </tr>
+                <tr>
+                    <th>Hora de pago</th>
+                    <td>{{ payment_date|time:"h:i A" }}</td>
+                </tr>
+                <tr>
+                    <th>ID de la transacción</th>
+                    <td>#{{ transaction_id }}</td>
+                </tr>
+                <tr>
+                    <th>Método de pago</th>
+                    <td>{{ payment_method }}</td>
+                </tr>
+                <tr>
+                    <th>Costo subtotal</th>
+                    <td>${{ subtotal }}</td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <td><strong>${{ total }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center mt-4">
+            <a href="{% url 'product_list' %}" class="finalizar-btn w-100" style="text-decoration: none;">Finalizar</a>
+        </div>
+        
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}Establecer Información del Envío - Solid Steel{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/client_style.css' %}">
+<style>
+  .payment-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+  }
+
+  .botones {
+      margin-right: auto;
+  }
+
+  .btn-pagar {
+      margin-left: auto;
+  }
+
+  .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+      
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+                <div class="d-flex justify-content-left" style="margin-top:25px;">
+                    <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'product_list' %}'">
+                        <span class="me-1">&larr;</span> Volver
+                    </button>
+                </div>
+        
+        </div> 
+        <div class="col-md-8" style="margin-top:25px;">
+            {% if messages %}
+                    <div class="list-group mt-3" style="margin-top:15px !important;">
+                        {% for message in messages %}
+                            <span class="list-group-item list-group-item-{{ message.tags }}">{{ message }}</span>
+                        {% endfor %}<br>
+                    </div>
+                {% endif %}
+    
+            <h2 class="text-center" style="margin-top:25px;">Actualizar Dirección</h2>
+            <form method="post" id="address-form">
+                {% csrf_token %}
+
+                <!-- Campos del formulario -->
+                <div class="mb-3">
+                    <label for="{{ form.client_address.id_for_label }}">Client address:</label>
+                    {{ form.client_address }}
+                    {% if form.client_address.errors %}
+                        <div class="error-message">{{ form.client_address.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.client_city.id_for_label }}">Client city:</label>
+                    {{ form.client_city }}
+                    {% if form.client_city.errors %}
+                        <div class="error-message">{{ form.client_city.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.client_state.id_for_label }}">Client state:</label>
+                    {{ form.client_state }}
+                    {% if form.client_state.errors %}
+                        <div class="error-message">{{ form.client_state.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.client_zip_code.id_for_label }}">Client zip code:</label>
+                    {{ form.client_zip_code }}
+                    {% if form.client_zip_code.errors %}
+                        <div class="error-message">{{ form.client_zip_code.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.client_address_additional_information.id_for_label }}">Client address additional information:</label>
+                    {{ form.client_address_additional_information }}
+                    {% if form.client_address_additional_information.errors %}
+                        <div class="error-message">{{ form.client_address_additional_information.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Botones -->
+                <div class="payment-container">
+                    <button class="btn btn-primary botones" type="submit">
+                        {% if form.instance.id_address %}Actualizar{% else %}Agregar{% endif %}
+                    </button>
+                    <button class="btn btn-primary btn-pagar" type="submit" name="pay-button">
+                        Pagar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,247 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #333333; /* Texto en gris oscuro para contraste */
+}
+
+h1, h2 {
+    font-weight: bold;
+    color: #333333; /* Títulos en gris oscuro */
+}
+
+h2 {
+    margin-top: 30px;
+    font-size: 2rem;
+}
+
+p {
+    color: #666666; /* Texto secundario gris medio */
+    font-size: 1.1rem;
+}
+
+.list-group-item {
+    background-color: #f9f9f9; /* Fondo claro para cada item */
+    border: none;
+    margin: 20px; /* Margen alrededor de cada tarjeta */
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para cada tarjeta */
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Centra verticalmente el contenido dentro de la tarjeta */
+    background-color: #ffffff; /* Fondo blanco para la tarjeta */
+    border: 1px solid #e0e0e0; /* Borde gris claro */
+    border-radius: 15px;
+    padding: 15px;
+    height: 180px; /* Altura fija para todas las tarjetas */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+    color: #333333; /* Texto en gris oscuro */
+    margin-left: 50px;
+}
+
+.card-title {
+    color: #333333; /* Títulos de productos en gris oscuro */
+}
+
+.card img {
+    width: 100%;
+    max-width: 180px; /* Tamaño fijo para las imágenes */
+    height: auto;
+    object-fit: cover; /* Ajusta la imagen al tamaño del contenedor */
+    border-radius: 10px;
+    margin-right: 20px; /* Margen a la derecha para separar de la información del producto */
+    align-self: center; /* Centra verticalmente la imagen en el contenedor */
+}
+
+.price {
+    background-color: #f0f0f0; /* Fondo gris claro para el precio */
+    color: #333333; /* Texto del precio en gris oscuro */
+    padding: 5px 10px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.btn-group .btn {
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-right: 5px;
+    border-radius: 0%;
+}
+
+.btn-secondary {
+    background-color: #5a5a5a; /* Botón para agregar en gris medio */
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #6c6c6c; /* Color de hover */
+}
+
+.btn-warning {
+    background-color: #ff9800; /* Botón para restar en color naranja */
+    color: #ffffff;
+}
+
+.btn-warning:hover {
+    background-color: #e68900; /* Color de hover */
+}
+
+.btn-danger {
+    background-color: #d9534f; /* Botón de eliminar en rojo */
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c; /* Color de hover */
+}
+
+.payment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    color: #333333; /* Texto en gris oscuro */
+}
+
+.payment-container p {
+    font-size: 1.3rem;
+}
+
+.payment-container .btn {
+    background-color: #007bff; /* Botón de pagar en azul */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.payment-container .btn:hover {
+    background-color: #0056b3; /* Hover del botón de pagar */
+}
+
+footer {
+    background-color: #f0f0f0; /* Fondo gris claro */
+    border-top: 1px solid #e0e0e0;
+    color: #666666; /* Texto del pie de página en gris medio */
+}
+
+footer img {
+    filter: grayscale(100%);
+}
+
+footer img:hover {
+    filter: none;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 15px;
+    height: auto; /* Ajustar la altura al contenido */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    width: 250px; /* Ajusta el ancho de la imagen */
+    height: 250px; /* Ajusta la altura de la imagen para mantener un tamaño uniforme */
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 30px; /* Incrementa la separación entre la imagen y las especificaciones */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px; /* Espacio entre los elementos del contenido */
+    color: #333333;
+}
+
+
+.card-title, .price, .btn-group {
+    margin-top: 5px; /* Separación entre cada elemento */
+}
+/* styles.css */
+
+/* ...el resto de tu CSS previo... */
+
+/* Ajustes para el contenedor de botones */
+#botonesitem {
+    display: flex;
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+    margin-top: 10px; /* Espaciado adicional entre el input y los botones */
+}
+
+/* Flexbox para los formularios */
+.form-group {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos en el formulario */
+    justify-content: space-between; /* Espacia los elementos para que se distribuyan mejor */
+    width: 100%; /* Asegura que el formulario use todo el ancho disponible */
+}
+
+/* Ajustes para inputs */
+.form-control {
+    width: 60px; /* Ajusta el ancho del input */
+    text-align: center; /* Centra el texto dentro del input */
+}
+
+.flex {
+    display: flex; /* Flex para el botón de eliminar */
+    justify-content: f; /* Alinea el botón de eliminar a la derecha */
+    margin-top: 10px;
+}
+
+#botonesitem {
+    display: flex;
+    justify-content: flex-start; /* Opcional: Cambia a flex-end o center según tus necesidades */
+    gap: 15px; /* Espacio entre los botones */
+    margin-top: 10px;
+}
+
+/* Ajustes para los formularios */
+.botones-container form {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacio entre el input y el botón */
+}
+
+.botones-container .btn {
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 14px; /* Ajusta el tamaño del texto */
+}
+
+.botones-container .form-control {
+    width: 50px; /* Tamaño uniforme para los inputs */
+    text-align: center;
+}
+
+.botones-container a.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}

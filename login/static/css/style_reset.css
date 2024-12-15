@@ -1,0 +1,53 @@
+.nav-tabs .nav-link {
+  border: 1px solid #cccccc;  
+  color: #5a5a5a;            
+  font-weight: 500;
+  background-color: #f0f0f0; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #333333;  
+  color: white;
+  border: 1px solid #333333;
+}
+
+.card {
+  border-radius: 12px;
+  background-color: white;
+  max-width: 450px;
+  width: 100%; 
+  padding: 10px 15px;  
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+h2 {
+  margin: 0;
+  padding: 0px;
+  font-size: 1.5rem;
+}
+
+.btn-outline-secondary {
+  color: #5a5a5a;            
+  border: 1px solid #cccccc;  
+  background-color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f0f0f0; 
+  color: #333;
+}
+
+.btn-dark {
+  background-color: #333333; 
+  border: none;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-dark:hover {
+  background-color: #333333; 
+}

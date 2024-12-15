@@ -1,0 +1,111 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}Carrito de Compras - Solid Steel{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'general/css/style_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_cart.css' %}">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<style>
+    @media (max-width: 767.9px) {
+        .imagen-producto {
+            width: 100% !important;
+            height: 250px !important;      /* Mantiene la proporción de la imagen */
+            object-fit: cover; 
+        }
+
+        .card img{
+            margin:0;
+            max-width:100%;
+        }
+    }
+
+</style>
+<main class="container mx-auto mt-5">
+    <button class="btn btn-outline-secondary mb-3" onclick="window.location.href='/products/'">
+        <span class="me-1">&larr;</span> Volver
+    </button>   
+
+    <div class="list-group mt-3">
+        {% for message in messages %}
+            {% if 'edit' in message.tags %}
+                <span class="list-group-item list-group-item-{{ message.tags }} p-3">{{ message }}</span>
+            {% endif %}
+        {% endfor %}
+
+        <h2 class="text-3xl font-semibold text-center text-gray-700 mb-5">Carrito</h2>
+        
+        <div class="list-group">
+            {% if carrito_items %}
+                {% for item in carrito_items %}
+                    <div class="list-group-item shadow-lg mb-4 rounded-lg">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4 ">
+                                    <img src="{{ item.product.product_image.url }}" class="img-fluid rounded-lg imagen-producto" alt="{{ item.product.product_name }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-xl font-bold">{{ item.product.product_name }}</h5>
+                                        <p class="price text-lg text-gray-700"><strong>Precio: ${{ item.product.product_price }}</strong></p>
+                                        <p class="text-gray-600">Material: {{ item.product.product_material }}</p>
+                                        <p class="text-gray-600">Cantidad: {{ item.cart_product_quantity }}</p>
+                                        
+                                        <div class="mt-4" id="botonesitem">
+                                            <!-- Contenedor para los botones con flex -->
+                                            <div class="botones-container">
+                                                <!-- Formulario para modificar el carrito -->
+                                                <form method="post" class="d-flex align-items-center">
+                                                    {% csrf_token %}
+                                                    
+                                                    <!-- Input para la cantidad -->
+                                                    <input type="number" name="cantidad" min="1" value="1" class="form-control me-2" style="width:120px;">
+                                                    
+                                                    <!-- Botón para agregar -->
+                                                    <button type="submit" class="btn btn-secondary d-flex align-items-center" formaction="{% url 'agregar_al_carrito' item.product.id_product%}">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+
+                                                    <!-- Botón para restar -->
+                                                    <button type="submit" class="btn btn-warning d-flex align-items-center" formaction="{% url 'restar_del_carrito' item.product.id_product%}">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    
+                                                </form>
+                                                
+                                        
+                                                <!-- Botón para eliminar -->
+                                                <a href="{% url 'eliminar_del_carrito' item.product.id_product %}" class="btn btn-danger" style="margin-top:10px;">Eliminar</a>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay productos en tu carrito.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <p class="text-center text-lg font-semibold text-gray-700">Total: ${{ total }}</p>
+    
+    <div class="text-center">
+        {% if total > 0 %}
+            <a href="{% url 'update_client_address' %}" class="btn btn-primary px-6 py-3 rounded-md text-white">Continuar</a>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

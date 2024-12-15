@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(40vh - 10px); 
+  padding: 0; 
+}
+
+.card {
+  max-width: 550px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-dark {
+  background-color: #333;
+  color: white;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.btn-dark:hover {
+  background-color: #444;
+}
+
+.btn-outline-secondary {
+  color: #5a5a5a;            
+  border: 1px solid #cccccc;  
+  background-color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f0f0f0; 
+  color: #333;
+}
+
+form {
+  margin-top: 25px;
+}

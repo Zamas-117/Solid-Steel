@@ -1,0 +1,41 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+h2 {
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+p {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.card {
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+footer img {
+    filter: grayscale(100%);
+}
+
+footer img:hover {
+    filter: none;
+}

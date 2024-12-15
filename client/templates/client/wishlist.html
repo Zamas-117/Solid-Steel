@@ -1,0 +1,39 @@
+{% extends 'base_without_image.html' %}
+
+{% block content %}
+
+
+<div class= "col-md-auto">
+<div class="d-flex justify-content-left">
+    <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'product_list' %}'">
+        <span class="me-1">&larr;</span> Volver
+    </button>
+</div>
+
+
+<h2 class="text-center">Lista de favoritos</h2>
+
+    <div class="container">
+        <div class="row">
+            {% for item in wishlist_items %}
+                <div class="col-sm-4">
+                    <a href="{% url 'product_detail' item.product.id_product %}" class="text-decoration-none">
+                        
+                        <div class="card" style="width: 100%; margin: 5px 10px;">
+                            <img src="{{ item.product.product_image.url }}" class="card-img-top" alt="{{ item.product.product_name }}" style=" width:100%; max-width: 400px; height:210px; object-fit: cover;"> 
+                            <div class="card-body" style="padding: 10px;">
+                                <h6 class="card-title">{{ item.product.product_name }}</h6>
+                                
+                                <p class="card-text">$&nbsp;{{ item.product.product_price }}</p>
+                            </div>
+                        </div>
+                        
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

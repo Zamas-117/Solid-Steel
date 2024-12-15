@@ -1,0 +1,103 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}Establecer Información del Envío - Solid Steel{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/client_style.css' %}">
+<style>
+  /* Estilo para centrar el contenedor en la pantalla */
+  .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 66vh;
+  }
+
+  .payment-container {
+      text-align: center;
+      background-color: #f8f9fa;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-payment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+  }
+
+  .btn-paypal {
+      background-color: #ffc439;
+  }
+
+  .btn-paypal:hover {
+      background-color: #ffb02e;
+  }
+
+  .btn-stripe {
+      background-color: #6772e5;
+  }
+
+  .btn-stripe:hover {
+      background-color: #5469d4;
+  }
+
+  .btn-payment img {
+      width: 24px;
+      height: auto;
+      margin-right: 10px;
+  }
+
+  /* Estilo para el botón de "Volver" */
+  .btn-back {
+      margin-top: 15px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container main-container">
+    <div class="d-flex justify-content-left w-100">
+        <button class="btn btn-outline-secondary btn-back" onclick="window.location.href='{% url 'update_client_address' %}'">
+            <span class="me-1">&larr;</span> Volver
+        </button>
+    </div>
+
+    {% if messages %}
+        <div class="list-group mt-3">
+            {% for message in messages %}
+                <span class="list-group-item list-group-item-{{ message.tags }}">{{ message }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2 class="text-center">Escoge tu método de pago</h2>
+    <div class="payment-container">
+        <form action="{% url 'iniciar_pago' %}" method="POST">
+            {% csrf_token %}
+            {% load static %}
+            <button class="btn-payment btn-paypal" {% if total == 0 %}disabled{% endif %}>
+                <img src="{% static 'images/paypal_logo.png' %}" alt="PayPal Logo"> Pagar con PayPal
+            </button>
+        </form>
+
+        <form action="{% url 'cart' %}" method="POST">
+            {% csrf_token %}
+            <button class="btn-payment btn-stripe" {% if total == 0 %}disabled{% endif %}>
+                <img src="{% static 'images/stripe_logo.jpg' %}" alt="Stripe Logo"> Pagar con Stripe
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

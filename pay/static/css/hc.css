@@ -1,0 +1,79 @@
+/* Estilos generales */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f7f7; /* Fondo suave */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrado horizontal de todo el contenido */
+  justify-content: flex-start; /* Alineación hacia el inicio, pero mantiene las tarjetas centradas */
+  min-height: auto; /* Asegura que todo el contenido se centre verticalmente */
+}
+
+/* Título de la página */
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px; /* Espaciado hacia abajo */
+  text-align: left; /* Alineación a la izquierda */
+  letter-spacing: 1px;
+  width: 100%; /* Ocupa todo el ancho para alineación izquierda */
+  margin-left: 30px; /* Margen de 30px desde la izquierda */
+}
+
+.icon-left {
+  margin-right: 10px;
+}
+
+/* Tarjetas de historial de compras */
+.shipments-container {
+  background-color: #fff; /* Fondo blanco para las tarjetas */
+  color: #333;
+  border-radius: 12px; /* Bordes redondeados */
+  padding: 25px;
+  width: 90%; /* Tarjetas más anchas */
+  max-width: 900px; /* Máximo ancho */
+  margin-bottom: 30px; /* Espaciado entre tarjetas */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: left; /* Contenido alineado a la izquierda */
+}
+
+.shipments-container:hover {
+  transform: translateY(-8px); /* Efecto de elevación */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.shipments-container h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.shipments-container p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 8px 0;
+  color: #555; /* Color más suave para el texto */
+}
+
+/* Separador entre productos */
+.shipments-container hr {
+  border-color: #eee; /* Borde más sutil */
+  margin: 20px 0;
+}
+
+.no-shipments {
+  font-size: 1.2rem;
+  color: #888;
+  text-align: center;
+}
+
+/* Margen inferior para el título */
+.page-title + .shipments-container {
+  margin-top: 40px; /* Espaciado adicional para separar del título */
+}

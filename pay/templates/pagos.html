@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar con PayPal</title>
+    <link rel="icon" type="image/png" href="{% static 'general/images/logo.png' %}">
+</head>
+<body>
+    <h1>Pago de productos</h1>
+    <p>Total a pagar: $<span id="amount">{{ monto_total }}</span> USD</p>
+
+    <!-- Botón para iniciar el pago en PayPal -->
+    <div class="payment-container mt-4">
+        <p>Total: ${{ total }}</p>
+        <form action="{% url 'iniciar_pago' %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-primary" {% if total == 0 %}disabled{% endif %}>
+                Pagar
+            </button>
+        </form>
+    </div>
+
+    <!-- Opciones de redirección después del pago -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('paymentStatus')) {
+                const paymentStatus = urlParams.get('paymentStatus');
+                if (paymentStatus === 'success') {
+                    alert("Pago completado con éxito.");
+                    window.location.href = "{% url 'pago_exitoso' %}";
+                } else if (paymentStatus === 'cancel') {
+                    alert("El pago fue cancelado.");
+                    window.location.href = "{% url 'pago_cancelado' %}";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

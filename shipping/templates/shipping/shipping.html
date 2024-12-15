@@ -1,0 +1,54 @@
+{% extends "base_without_image.html" %}
+
+{% block title %}
+Información de Envío - Solid Steel
+{% endblock %}
+
+{% load static %}
+
+{% block head %}
+    {{block.super}}
+    <link rel="stylesheet" href="{% static 'general/style_envio.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-container">
+    <div class="info-wrapper">
+        <h2>Datos de Envío</h2>
+        <h3>Direccion</h3>
+        <div class="info-entry">
+            <strong class="info-title">Nombre Completo:</strong>
+            <span class="info-data" id="fullName">Juan Pérez</span>
+        </div>
+        <div class="info-entry">
+            <strong class="info-title">Dirección de Envío:</strong>
+            <span class="info-data" id="address">Calle Falsa 123</span>
+        </div>
+        <div class="info-entry">
+            <strong class="info-title">Fraccionamiento:</strong>
+            <span class="info-data" id="fraccionamiento">algo aquí</span>
+        </div>
+        <div class="info-entry">
+            <strong class="info-title">Ciudad:</strong>
+            <span class="info-data" id="city">Springfield</span>
+        </div>
+        <div class="info-entry">
+            <strong class="info-title">Código Postal:</strong>
+            <span class="info-data" id="postalCode">12345</span>
+        </div>
+        <div class="button-group">
+            <button type="button" class="button-refresh" onclick="window.location.href='{% url 'shipping_actualizar_datos' %}';">Actualizar datos</button>
+            <button type="button" class="button-continue" id="continueButton">Continuar</button>
+        </div>
+    </div>
+</main>
+
+<footer class="footer-container">
+    <p>&copy; 2024 Solid Steel. Todos los derechos reservados.</p>
+    <div>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/github.png" alt="GitHub" width="30"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn" width="30"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter" width="30"></a>
+    </div>
+</footer>
+{% endblock %}

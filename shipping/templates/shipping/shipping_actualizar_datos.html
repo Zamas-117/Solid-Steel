@@ -1,0 +1,56 @@
+{% extends "base_without_image.html" %}
+
+{% block title %}
+Información de Envío - Solid Steel
+{% endblock %}
+
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'general/style_envio.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-container">
+    <div class="info-wrapper">
+        <h2>Actualizar datos de envío</h2>
+        <form action="/submit" method="POST">
+            {% csrf_token %}
+            <div class="info-entry">
+                <label for="fullName"><strong class="info-title">Nombre Completo:</strong></label>
+                <input type="text" id="fullName" name="fullName" value="Juan Pérez" required>
+            </div>
+            <div class="info-entry">
+                <label for="address"><strong class="info-title">Dirección de Envío:</strong></label>
+                <input type="text" id="address" name="address" value="Calle Falsa 123" required>
+            </div>
+            <div class="info-entry">
+                <label for="fraccionamiento"><strong class="info-title">Fraccionamiento:</strong></label>
+                <input type="text" id="fraccionamiento" name="fraccionamiento" value="algo aquí">
+            </div>
+            <div class="info-entry">
+                <label for="city"><strong class="info-title">Ciudad:</strong></label>
+                <input type="text" id="city" name="city" value="Springfield" required>
+            </div>
+            <div class="info-entry">
+                <label for="postalCode"><strong class="info-title">Código Postal:</strong></label>
+                <input type="text" id="postalCode" name="postalCode" value="12345" required>
+            </div>
+            <div class="button-group">
+                <button type="button" class="button-refresh" onclick="window.location.href='{% url 'shipping' %}'" pattern="\d{5}" maxlength="5">Actualizar datos</button>
+                <!-- El botón "Continuar" ha sido eliminado -->
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="footer-container">
+    <p>&copy; 2024 Solid Steel. Todos los derechos reservados.</p>
+    <div>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/github.png" alt="GitHub" width="30"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn" width="30"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter" width="30"></a>
+    </div>
+</footer>
+{% endblock %}

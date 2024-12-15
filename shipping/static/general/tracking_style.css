@@ -1,0 +1,107 @@
+/* Estilos generales */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f7f7; /* Fondo suave */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrado horizontal de todo el contenido */
+  justify-content: flex-start; /* Alineación hacia el inicio, pero mantiene las tarjetas centradas */
+  min-height: auto; /* Asegura que todo el contenido se centre verticalmente */
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+  text-align: left; /* Alineación a la izquierda */
+  letter-spacing: 1px;
+  width: 100%;
+  margin-left: 30px; /* Margen de 30px desde la izquierda */
+}
+
+/* Estilo para el botón */
+.btn-back {
+  background-color: transparent;
+  border: 2px solid #333;
+  padding: 12px 20px;
+  border-radius: 5px;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  display: block;
+  margin-top: 20px;
+  text-align: left; /* Alineación hacia la izquierda sin margen */
+  margin-left: 30px; /* Margen hacia la izquierda */
+}
+
+.btn-back:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.icon-left {
+  margin-right: 10px;
+}
+
+/* Estilo para las tarjetas de envíos */
+.shipments-container {
+  background-color: #fff; /* Blanco para las tarjetas */
+  color: #333;
+  border-radius: 12px;
+  padding: 25px;
+  width: 80%;
+  max-width: 600px; /* Aumentar el tamaño de las tarjetas */
+  margin-bottom: 30px; /* Espaciado entre tarjetas */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más sutil */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.shipments-container:hover {
+  transform: translateY(-8px); /* Más marcado el efecto de elevación */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.shipments-container h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: left; /* Alineación del título hacia la izquierda */
+}
+
+.shipments-container p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 8px 0;
+  color: #555; /* Color más suave para el texto */
+  text-align: left;
+}
+
+.shipment-info {
+  color: #333;
+  font-weight: 500;
+}
+
+.pending {
+  color: #f39c12; /* Amarillo brillante para "No entregado aún" */
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+hr {
+  border-color: #eee; /* Borde más sutil entre los envíos */
+  margin: 20px 0;
+}
+
+.no-shipments {
+  font-size: 1.2rem;
+  color: #888;
+  text-align: center;
+}

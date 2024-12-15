@@ -1,0 +1,87 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}
+    Solid steel - recycle
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/custom_style.css' %}">
+    <style>
+        /* Define el tamaño del mapa */
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function initMap() {
+            // Crear un nuevo mapa con una ubicación predeterminada
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: 31.6904, lng: -106.4245 } // Coordenadas iniciales
+            });
+
+            var geocoder = new google.maps.Geocoder();
+
+            // Escuchar el clic en el botón para geocodificar la dirección ingresada
+            document.getElementById('geocode-btn').addEventListener('click', function() {
+                var address = document.getElementById('address-input').value;
+                geocodeAddress(geocoder, map, address);
+            });
+        }
+
+        function geocodeAddress(geocoder, map, address) {
+            geocoder.geocode({ 'address': address }, function(results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('Geocode no tuvo éxito debido a: ' + status);
+                }
+            });
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="container py-5">
+  <h2 class="mb-3">Recicladoras</h2>
+  <p class="text-muted">¡Contáctate con la más cercana o ingresa una dirección para buscarla en el mapa!</p>
+
+  <!-- Entrada para ingresar la dirección -->
+  <div class="mb-3">
+      <input type="text" id="address-input" class="form-control" placeholder="Ingresa una dirección">
+      <button id="geocode-btn" class="btn btn-primary mt-2">Buscar en el mapa</button>
+  </div>
+
+  <!-- Aquí se muestra el mapa de Google Maps -->
+  <div id="map"></div>
+
+  <nav aria-label="Page navigation example" class="mt-4">
+      <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">&larr; Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><span class="page-link">...</span></li>
+          <li class="page-item"><a class="page-link" href="#">67</a></li>
+          <li class="page-item"><a class="page-link" href="#">68</a></li>
+          <li class="page-item">
+              <a class="page-link" href="#">Next &rarr;</a>
+          </li>
+      </ul>
+  </nav>
+</main>
+
+<!-- Incluir el script de la API de Google Maps -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZWjlVC9wu6AvP-8TEx7vkbEVJpqRPLoE&callback=initMap">
+</script>
+{% endblock %}

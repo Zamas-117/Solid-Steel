@@ -1,0 +1,447 @@
+<!--
+Template Name: Registro de Cliente con Validación Biométrica
+File: register_client.html
+Author: Cesar Omar Andrade 215430
+Coauthor: Hugo Abisai Reyes Trejo - 215201
+
+Description:
+    Esta plantilla permite a los clientes registrarse en el sistema con validaciones de campos y soporte para 
+    biometría a través de captura de imagen por cámara. También incluye la opción de cargar una identificación oficial 
+    y un código QR para cargar fotos desde otros dispositivos.
+
+Características principales:
+    - Validación en tiempo real de campos como nombre, apellido, teléfono, correo electrónico y contraseña.
+    - Subida de identificación oficial con restricciones de formato (JPEG y PNG).
+    - Captura de foto actual mediante la cámara del dispositivo:
+        - Muestra un video en vivo desde la cámara.
+        - Permite tomar una foto y subirla como archivo al formulario.
+        - Genera una vista previa de la foto tomada.
+        - Incluye opción para retomar la foto si no es satisfactoria.
+    - Alternativa para cargar una foto mediante un código QR generado dinámicamente.
+    - Integración de estilos personalizados con Bootstrap para diseño responsive.
+
+Validaciones:
+    - Nombre y apellido: Solo se aceptan letras y espacios.
+    - Teléfono: Debe tener al menos 10 dígitos numéricos.
+    - Correo electrónico: Validación de formato estándar.
+    - Contraseña: Al menos 8 caracteres, un número y un carácter especial.
+    - Identificación oficial: Archivos en formato JPEG o PNG.
+    - Foto actual: Validación de formato y existencia del archivo.
+
+Secciones dinámicas:
+    - Captura de foto desde la cámara, con previsualización y opción para retomar.
+    - Generación de un código QR único para facilitar la subida de fotos desde otros dispositivos.
+    - Mensajes dinámicos para advertencias y validaciones de formularios.
+
+Notas:
+    - La validación biométrica usa Amazon Rekognition en el backend para comparar la foto capturada con la identificación oficial.
+    - La cámara se activa solo si está disponible en el dispositivo. De lo contrario, se muestra la opción de subir una foto manualmente.
+    - La generación del código QR se basa en un identificador único para cada usuario.
+-->
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solid Steel - Registro</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style_register.css' %}">
+    <link rel="stylesheet" href="{% static 'general/css/style_general.css' %}"> 
+    <style>
+        .rounded-oval {
+            width: 100%;
+            max-width: 250px;
+            height: 320px;
+            border-radius: 50%; /* Forma de óvalo vertical */
+            object-fit: cover;
+        }
+    </style>
+    
+</head>
+<body>
+    <header class="bg-dark text-white text-center p-4"></header>
+
+    <main class="container mt-5">
+        <div class="d-flex justify-content-center">
+            <div class="card p-4 shadow-lg" style="max-width: 500px; width: 100%;">
+                <div class="d-flex justify-content-left">
+                    <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'index' %}'">
+                        <span class="me-1">&larr;</span> Volver
+                    </button>
+                </div>
+
+                {% if messages %}
+                    <div class="alert alert-warning">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-center mb-3">
+                    <h2>Regístrate como Cliente</h2>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="{% provider_login_url 'google' %}" class="btn btn-outline-dark w-100">
+                        <i class="bi bi-google"></i> Continuar con Google
+                    </a>
+                </div>
+                <div class="d-flex align-items-center my-4">
+                    <hr class="flex-grow-1">
+                    <span class="px-2">O</span>
+                    <hr class="flex-grow-1">
+                </div>
+
+                <form id="register-form" method="POST" action="" enctype="multipart/form-data" onsubmit="return validateForm()">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_client_first_name" class="form-label">Nombre</label>
+                        {{ form.client_first_name }}
+                        <small id="nameHelp" class="form-text text-danger d-none">El nombre solo debe contener letras.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_client_last_name" class="form-label">Apellido</label>
+                        {{ form.client_last_name }}
+                        <small id="lastNameHelp" class="form-text text-danger d-none">El apellido solo debe contener letras.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_client_phone" class="form-label">Número de Teléfono</label>
+                        {{ form.client_phone }}
+                        <small id="phoneHelp" class="form-text text-danger d-none">El número debe tener al menos 10 dígitos.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Correo Electrónico</label>
+                        {{ form.email }}
+                        <small id="emailHelp" class="form-text text-danger d-none">El correo solo puede contener letras, números, '.', '_', '-', y '@'.</small>
+                    </div>
+                    <div class="mb-3 position-relative">
+                        <label for="passwordField" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" id="passwordField" name="password" class="form-control" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()" style="border-left: none;">
+                                <i id="eyeIconClosed" class="bi bi-eye-slash"></i>
+                                <i id="eyeIconOpen" class="bi bi-eye" style="display: none;"></i>
+                            </button>
+                        </div>
+                        <small id="passwordHelp" class="form-text text-danger d-none">
+                            La contraseña debe tener al menos 8 caracteres, incluir un número y un carácter especial.
+                        </small>
+                    </div>
+
+                    <!-- Campo para subir identificación oficial -->
+                    <div class="mb-3">
+                        <label for="id_identificacion" class="form-label">Subir Identificación Oficial</label>
+                        <input type="file" name="identificacion" class="form-control" required>
+                        <small id="identificacionHelp" class="form-text text-danger d-none">La identificación debe ser un archivo de imagen en formato JPEG, PNG o BMP.</small>
+                    </div>
+
+                    <!-- Campo de cámara o carga de imagen -->
+                    <div class="mb-3" id="photo-section">
+                        <label for="foto_actual" class="form-label" id="title_foto_actual">Foto Actual</label>
+                        <div class="d-flex flex-column align-items-center" id="camera-section" style="display: none;">
+                            <video id="video" class="rounded-oval" autoplay></video>
+                            <canvas id="canvas" style="display: none;"></canvas>
+                            <button type="button" id="capture-btn" class="btn btn-primary mt-2">Tomar Foto</button>
+                            <input type="file" name="foto_actual" id="foto_actual" style="display: none;">
+                            <img id="photo-preview" class="rounded-oval" src="#" alt="Foto previa" style="display: none;">
+                        </div>
+
+                        <div class="text-center mb-3" id="qr-code-section">
+                            <h5>Escanea el código QR para subir tu foto</h5>
+                            <canvas id="qr-code"></canvas>
+                        </div>
+                        <input type="hidden" id="unique-id-input" name="unique_id" value="">
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100">Registrar</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'client_login' %}" class="text-muted">¿Ya tienes una cuenta? Inicia sesión como cliente</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p class="mt-3">&copy; 2024 Solid Steel. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('passwordField');
+        const eyeIconClosed = document.getElementById('eyeIconClosed');
+        const eyeIconOpen = document.getElementById('eyeIconOpen');
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIconClosed.style.display = 'none';
+            eyeIconOpen.style.display = 'block';
+        } else {
+            passwordField.type = 'password';
+            eyeIconClosed.style.display = 'block';
+            eyeIconOpen.style.display = 'none';
+        }
+    }
+
+            //qr
+            function generateUniqueId() {
+                // Generar una secuencia de 20 números aleatorios
+                let uniqueId = '';
+                for (let i = 0; i < 20; i++) {
+                    uniqueId += Math.floor(Math.random() * 10); // Genera un número aleatorio de 0 a 9
+                }
+                return uniqueId;
+            }
+        
+            // Generar la ID única
+            const uniqueId = generateUniqueId(); // Asegúrate de que `unique_id` esté en el contexto
+            document.getElementById("unique-id-input").value = uniqueId; // Asignar el valor al campo oculto
+            const qrUrl = `https://solid-steels.com/register/cargar_foto/${uniqueId}/`;
+            console.log(uniqueId);
+        // Crear el código QR
+        const qr = new QRious({
+            element: document.getElementById('qr-code'),
+            value: qrUrl,
+            size: 200 // Tamaño del código QR
+        });
+</script>
+
+<script>
+    // Validar formulario para cliente
+    function validateForm() {
+        let isValid = true;
+
+        // Validación de nombre
+        const firstNameInput = document.getElementById("id_client_first_name");
+        const nameHelp = document.getElementById("nameHelp");
+        const nameRegex = /^[A-Za-zÀ-ÿ\u00f1\u00d1\s]+$/;
+        if (!nameRegex.test(firstNameInput.value)) {
+            nameHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            nameHelp.classList.add("d-none");
+        }
+
+        // Validación de apellido
+        const lastNameInput = document.getElementById("id_client_last_name");
+        const lastNameHelp = document.getElementById("lastNameHelp");
+        if (!nameRegex.test(lastNameInput.value)) {
+            lastNameHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            lastNameHelp.classList.add("d-none");
+        }
+
+        // Validación de teléfono
+        const phoneInput = document.getElementById("id_client_phone");
+        const phoneHelp = document.getElementById("phoneHelp");
+        const phoneRegex = /^\d{10,}$/;
+        if (!phoneRegex.test(phoneInput.value)) {
+            phoneHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            phoneHelp.classList.add("d-none");
+        }
+
+        // Validación de correo electrónico
+        const emailInput = document.getElementById("id_email");
+        const emailHelp = document.getElementById("emailHelp");
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(emailInput.value)) {
+            emailHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            emailHelp.classList.add("d-none");
+        }
+
+        // Validación de contraseña
+        const passwordInput = document.getElementById("passwordField");
+        const passwordHelp = document.getElementById("passwordHelp");
+        const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.{8,})/;
+        if (!passwordRegex.test(passwordInput.value)) {
+            passwordHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            passwordHelp.classList.add("d-none");
+        }
+
+        // Validación de archivo de identificación
+        const identificacionInput = document.querySelector("input[name='identificacion']");
+        const identificacionHelp = document.getElementById("identificacionHelp");
+        const validImageTypes = ['image/jpeg', 'image/png'];
+        if (!identificacionInput.files || identificacionInput.files.length === 0) {
+            identificacionHelp.textContent = "Por favor, sube tu identificación oficial.";
+            identificacionHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            const identificacionFile = identificacionInput.files[0];
+            if (!validImageTypes.includes(identificacionFile.type)) {
+                identificacionHelp.textContent = "La identificación debe ser un archivo de imagen en formato JPEG o PNG.";
+                identificacionHelp.classList.remove("d-none");
+                isValid = false;
+            } else {
+                identificacionHelp.classList.add("d-none");
+            }
+        }
+
+        // Validación de foto actual
+        const fotoInput = document.querySelector("input[name='foto_actual']");
+        const fotoHelp = document.getElementById("fotoHelp");
+        const rekognitionValidImageTypes = ['image/jpeg', 'image/png'];
+
+        if (!fotoInput.files || fotoInput.files.length === 0) {
+            fotoHelp.textContent = "Por favor, toma una foto actual o súbela.";
+            fotoHelp.classList.remove("d-none");
+            isValid = false;
+        } else {
+            const fotoFile = fotoInput.files[0];
+            if (!rekognitionValidImageTypes.includes(fotoFile.type)) {
+                fotoHelp.textContent = "La foto debe ser un archivo de imagen en formato JPEG o PNG.";
+                fotoHelp.classList.remove("d-none");
+                isValid = false;
+            } else {
+                fotoHelp.classList.add("d-none");
+            }
+        }
+
+        return isValid;
+    }
+
+    // Configuración de cámara
+    document.addEventListener("DOMContentLoaded", function() {
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const photoPreview = document.getElementById('photo-preview');
+        const cameraSection = document.getElementById('camera-section');
+        const titleCameraSection = document.getElementById('title_foto_actual');
+        const qr_code_section = document.getElementById('qr-code-section');
+        const fotoInput = document.getElementById('foto_actual');
+
+        let isCameraAvailable = false;
+
+        // Verificar disponibilidad de la cámara
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                if (videoDevices.length > 0) {
+                    return navigator.mediaDevices.getUserMedia({ video: true });
+                } else {
+                    throw new Error("No se encontraron dispositivos de cámara.");
+                }
+            })
+            .then(stream => {
+                isCameraAvailable = true;
+                video.srcObject = stream;
+                cameraSection.style.display = "block";
+                qr_code_section.style.display = "none";
+            })
+            .catch(error => {
+                    // Si la cámara no está disponible, muestra la carga de archivo
+                    console.error("No se puede acceder a la cámara:", error);
+                    cameraSection.style.display = "none";
+                    qr_code_section.style.display = "block";
+                    titleCameraSection.style.display="none";
+        
+                    // Forzar que la sección de la cámara no sea visible
+                    cameraSection.classList.add("visually-hidden"); // Añadir una clase que oculte el elemento
+            });
+
+        // Capturar foto desde la cámara
+        captureBtn.addEventListener("click", () => {
+            if (isCameraAvailable) {
+                const context = canvas.getContext("2d");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+                const imageDataURL = canvas.toDataURL("image/png");
+                photoPreview.src = imageDataURL;
+                photoPreview.style.display = "block";
+
+                fetch(imageDataURL)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], "foto_actual.png", { type: "image/png" });
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        fotoInput.files = dataTransfer.files;
+                    });
+            }
+        });
+
+        // Validar antes de enviar el formulario
+        document.getElementById("register-form").addEventListener("submit", function(event) {
+            if (cameraSection.style.display === "block" && photoPreview.style.display === "none") {
+                event.preventDefault();
+                alert("Por favor, captura una foto antes de enviar el formulario.");
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const photoPreview = document.getElementById('photo-preview');
+        const retakeBtn = document.createElement("button");
+        const fotoInput = document.querySelector("input[name='foto_actual']");
+
+        let isCameraAvailable = true; // Suponiendo que la cámara esté disponible
+
+        // Configuración del botón para tomar otra foto
+        retakeBtn.textContent = "Tomar otra foto";
+        retakeBtn.classList.add("btn", "btn-secondary", "mt-2");
+        retakeBtn.style.display = "none"; // Oculta el botón inicialmente
+        document.getElementById('camera-section').appendChild(retakeBtn);
+
+        captureBtn.addEventListener("click", () => {
+            if (isCameraAvailable) {
+                const context = canvas.getContext("2d");
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+                const imageDataURL = canvas.toDataURL("image/png");
+                photoPreview.src = imageDataURL;
+                photoPreview.style.display = "block"; // Muestra la vista previa de la foto
+                video.style.display = "none"; // Oculta el video de la cámara
+                captureBtn.style.display = "none"; // Oculta el botón de tomar foto
+                retakeBtn.style.display = "block"; // Muestra el botón para tomar otra foto
+
+                fetch(imageDataURL)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], "foto_actual.png", { type: "image/png" });
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        fotoInput.files = dataTransfer.files;
+                    });
+            }
+        });
+
+        // Evento para volver a activar la cámara
+        retakeBtn.addEventListener("click", () => {
+            video.style.display = "block"; // Muestra el video de la cámara nuevamente
+            captureBtn.style.display = "block"; // Muestra el botón de tomar foto
+            photoPreview.style.display = "none"; // Oculta la vista previa de la foto
+            retakeBtn.style.display = "none"; // Oculta el botón de tomar otra foto
+        });
+    });
+</script>
+
+</body>
+</html>

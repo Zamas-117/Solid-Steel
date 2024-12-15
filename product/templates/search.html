@@ -1,0 +1,155 @@
+{% load static %}
+<html>
+    <body>
+        <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr auto auto auto;
+                gap: 10px;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .input-group {
+                display: flex;
+                width: 100%;
+            }
+
+            .input-group .form-control {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            .input-group-append .btn {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            .btn-menu {
+                padding: 5px 15px;
+                font-size: 14px;
+                background-color: #F5F5F5;
+                color: black;
+                border: none;
+            }
+
+            .btn-menu.active {
+                background-color: #2C2C2C;
+                color: white;
+            }
+        </style>
+
+        <div class="container-fluid" style="height: 95%; margin-top:30px; ">
+            <div class="row">
+                <!-- SideBar -->
+                <div class="col-md-3 col-75" id="advancedSearch" style="display: none;">
+                    <div class="card" style="width: 100%;">
+                        <ul class="list-group list-group-flush">
+                            <!-- Título de Búsqueda Avanzada -->
+                            <li class="list-group-item font-weight-bold">Buscador Avanzado</li>
+        
+                            <!-- Filtro por Categoría -->
+                            <li class="list-group-item">
+                                <form method="GET" action="{% url 'product_list' %}">
+                                    <label for="category">Categoría:</label>
+                                    <select name="category" id="category" class="form-control">
+                                        <option value="">Todas</option>
+                                        <option value="Acero">Acero</option>
+                                        <option value="Aluminio">Aluminio</option>
+                                        <option value="Bronce">Bronce</option>
+                                        <option value="Metal">Metal</option>
+                                    </select>
+                                    <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                                </form>
+                            </li>
+        
+                            <!-- Filtro por Ancho -->
+                            <li class="list-group-item">
+                                <form method="GET" action="{% url 'product_list' %}">
+                                    <label for="width">Ancho:</label>
+                                    <select name="width" id="width" class="form-control">
+                                        <option value="">Todos</option>
+                                        {% for width in widths %}
+                                            <option value="{{ width }}">{{ width }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                                </form>
+                            </li>
+        
+                            <!-- Filtro por Alto -->
+                            <li class="list-group-item">
+                                <form method="GET" action="{% url 'product_list' %}">
+                                    <label for="height">Alto:</label>
+                                    <select name="height" id="height" class="form-control">
+                                        <option value="">Todos</option>
+                                        {% for height in heights %}
+                                            <option value="{{ height }}">{{ height }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                                </form>
+                            </li>
+        
+                            <!-- Filtro por Espesor -->
+                            <li class="list-group-item">
+                                <form method="GET" action="{% url 'product_list' %}">
+                                    <label for="thickness">Espesor:</label>
+                                    <select name="thickness" id="thickness" class="form-control">
+                                        <option value="">Todos</option>
+                                        {% for thickness in thicknesses %}
+                                            <option value="{{ thickness }}">{{ thickness }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                                </form>
+                            </li>
+        
+                            <!-- Filtro por Precio -->
+                            <li class="list-group-item">
+                                <form method="GET" action="{% url 'product_list' %}">
+                                    <label for="price_min">Precio Mínimo:</label>
+                                    <input type="number" name="price_min" id="price_min" class="form-control" placeholder="0">
+                                    <label for="price_max" class="mt-2">Precio Máximo:</label>
+                                    <input type="number" name="price_max" id="price_max" class="form-control" placeholder="0">
+                                    <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+        <div class="grid-container">
+            <!-- Barra de búsqueda -->
+            <div class="item1">
+                <form method="GET" action="{% url 'product_list' %}">
+                    <div class="input-group mb-3">
+                        <input type="text" name="q" class="form-control" placeholder="Buscar producto" value="{{ request.GET.q }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-menu" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Botones para ordenar -->
+            <div class="item2">
+                <a href="?order=new" class="btn btn-menu btn-sm {% if request.GET.order == 'new' %}active{% endif %}">
+                    NUEVO
+                </a>
+            </div>
+            <div class="item2">
+                <a href="?order=asc" class="btn btn-menu btn-sm {% if request.GET.order == 'asc' %}active{% endif %}">
+                    PRECIO MENOR
+                </a>
+            </div>
+            <div class="item2">
+                <a href="?order=desc" class="btn btn-menu btn-sm {% if request.GET.order == 'desc' %}active{% endif %}">
+                    PRECIO MAYOR
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

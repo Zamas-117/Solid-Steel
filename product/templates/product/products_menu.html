@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Menu De productos {% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'general/images/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'general/css/noimage.css' %}">
+</head>
+<style>
+  .fixed-image {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+  }
+  .custom-btn {
+      background-color: #6c757d;
+      color: white;
+      border: none;
+  }
+  .custom-btn:hover {
+      background-color: #5a6268;
+  }
+
+  /* Estilos para mostrar siempre el menú en pantallas grandes */
+  @media (min-width: 768px) {
+    #advancedSearch {
+        display: block;
+    }
+}
+
+@media (max-width: 767px) {
+    #advancedSearch {
+        display: none;
+    }
+}
+
+/* Contenedor del botón del carrito */
+.cart-button {
+  position: relative; /* Relativo para que el contador se posicione dentro del botón */
+  display: inline-block;
+}
+
+/* Estilo para el numerito del contador */
+.cart-count {
+  position: absolute;
+  top: -5px; /* Ajusta según el tamaño del botón */
+  right: -5px; /* Ajusta según el tamaño del botón */
+  background-color: red; /* Fondo rojo */
+  color: white; /* Texto blanco */
+  font-size: 12px; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita */
+  border-radius: 50%; /* Forma circular */
+  width: 20px; /* Ancho fijo */
+  height: 20px; /* Alto fijo */
+  display: flex; /* Centrar el texto */
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Sombra */
+  z-index: 10; /* Asegura que el contador quede encima */
+}
+
+.cart-count.large-count {
+    padding: 6px 10px; /* Más espacio para '+99' */
+    font-size: 12px; /* Aumentar tamaño del texto */
+    min-width: 25px; /* Más ancho para acomodar '+99' */
+    height: 25px; /* Más alto para mantener el diseño circular */
+}
+</style>
+
+<body>
+    <div class="container-fluid" style="background-color: white; padding: 10px 0;">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-left">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="header-logo" style="max-width: 100px; height: auto;">
+            </div>
+            <div class="col-md-6 text-center">
+                <button class="btn btn-custom {% if request.resolver_match.url_name == 'recycler' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'recycler' %}'">Reciclaje</button>
+                <button class="btn btn-custom {% if request.resolver_match.url_name == 'product_list' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'product_list' %}'">Productos</button>
+            </div>
+            <div class="col-md-3 text-end">
+                {% if request.resolver_match.url_name == 'product_list' %}
+                    <button class="btn custom-btn d-md-none" onclick="toggleSearch()"><i class="fas fa-bars" id="menuIcon"></i></button>
+                {% endif %}
+
+                <!-- Botón del carrito con el contador -->
+                <div class="cart-button">
+                    <button class="btn btn-custom {% if request.resolver_match.url_name == 'cart' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'cart' %}'">
+                        <i class="bi bi-cart2"></i>
+                    </button>
+                    {% if cart_items_count > 0 %}
+                        <span class="cart-count {% if cart_items_display == '+99' %}large-count{% endif %}">
+                            {{ cart_items_display }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <button class="btn btn-custom {% if request.resolver_match.url_name == 'paid_orders' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'paid_orders' %}'">
+                    <i class="bi bi-truck"></i>
+                </button>
+
+                <button class="btn btn-custom {% if request.resolver_match.url_name == 'wishlist' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'wishlist' %}'">
+                    <i class="bi bi-bookmark-heart-fill"></i>
+                </button>
+                
+                <button class="btn btn-custom {% if request.resolver_match.url_name == 'client_edit_info' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'client_edit_info' %}'"><i class="bi bi-gear"></i></button>
+
+                <div class="cart-button">
+                    <button class="btn btn-custom {% if request.resolver_match.url_name == 'historial_compras' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'historial_compras' %}'">
+                        <i class="bi bi-clock-history"></i>
+                    </button>
+                </div>
+
+                <button class="btn btn-custom {% if request.resolver_match.url_name == 'client_login' %}active{% endif %}" type="button" onclick="window.location.href='{% url 'client_login' %}'"><i class="bi bi-box-arrow-left"></i></button>
+            </div>
+        </div>
+    </div>
+<div class="container-fluid" style="height: 95%; margin-top:30px; ">
+    <div class="row">
+        <!-- SideBar -->
+         
+        <div class="col-md-3 col-75" id="advancedSearch" style="display: block;">
+            <div class="card" style="width: 100%;">
+                <ul class="list-group list-group-flush">
+                    <!-- Título de Búsqueda Avanzada -->
+                    <li class="list-group-item font-weight-bold">Buscador Avanzado</li>
+
+                    <!-- Filtro por Categoría -->
+                    <li class="list-group-item">
+                        <form method="GET" action="{% url 'product_list' %}">
+                            <label for="category">Categoría:</label>
+                            <select name="category" id="category" class="form-control">
+                                <option value="">Todas</option>
+                                <option value="Acero">Acero</option>
+                                <option value="Aluminio">Aluminio</option>
+                                <option value="Bronce">Bronce</option>
+                                <option value="Metal">Metal</option>
+                            </select>
+                            <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                        </form>
+                    </li>
+
+                    <!-- Filtro por Ancho -->
+                    <li class="list-group-item">
+                        <form method="GET" action="{% url 'product_list' %}">
+                            <label for="width">Ancho:</label>
+                            <select name="width" id="width" class="form-control">
+                                <option value="">Todos</option>
+                                {% for width in widths %}
+                                    <option value="{{ width }}">{{ width }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                        </form>
+                    </li>
+
+                    <!-- Filtro por Alto -->
+                    <li class="list-group-item">
+                        <form method="GET" action="{% url 'product_list' %}">
+                            <label for="height">Alto:</label>
+                            <select name="height" id="height" class="form-control">
+                                <option value="">Todos</option>
+                                {% for height in heights %}
+                                    <option value="{{ height }}">{{ height }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                        </form>
+                    </li>
+
+                    <!-- Filtro por Espesor -->
+                    <li class="list-group-item">
+                        <form method="GET" action="{% url 'product_list' %}">
+                            <label for="thickness">Espesor:</label>
+                            <select name="thickness" id="thickness" class="form-control">
+                                <option value="">Todos</option>
+                                {% for thickness in thicknesses %}
+                                    <option value="{{ thickness }}">{{ thickness }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                        </form>
+                    </li>
+
+                    <!-- Filtro por Precio -->
+                    <li class="list-group-item">
+                        <form method="GET" action="{% url 'product_list' %}">
+                            <label for="price_min">Precio Mínimo:</label>
+                            <input type="number" name="price_min" id="price_min" class="form-control" placeholder="0">
+                            <label for="price_max" class="mt-2">Precio Máximo:</label>
+                            <input type="number" name="price_max" id="price_max" class="form-control" placeholder="0">
+                            <button type="submit" class="btn custom-btn mt-2">Filtrar</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Menu de productos -->
+        <div class="col-md-9 col-25">
+            {% include "search.html" %}
+            <div class="container">
+                <div class="row">
+                    {% for Product in productos %}
+                        <div class="col-sm-4">
+                            <a href="{% url 'product_detail' Product.id_product %}" class="text-decoration-none">
+                                <div class="card" style="width: 100%; margin: 5px 10px;">
+                                    <img src="{{ Product.product_image.url }}" class="card-img-top fixed-image">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ Product.product_name }}</h6>
+                                        <p class="card-text">$&nbsp;{{ Product.product_price }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-light text-center py-4 mt-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4">
+              <h6>Casos de uso</h6>
+              <ul class="list-unstyled">
+                  <li><a href="#">Diseño UI</a></li>
+                  <li><a href="#">Diseño UX</a></li>
+                  <li><a href="#">Wireframing</a></li>
+              </ul>
+          </div>
+          <div class="col-md-4">
+              <h6>Explorar</h6>
+              <ul class="list-unstyled">
+                  <li><a href="#">Diseño</a></li>
+                  <li><a href="#">Prototipado</a></li>
+                  <li><a href="#">Características de desarrollo</a></li>
+              </ul>
+          </div>
+          <div class="col-md-4">
+              <h6>Recursos</h6>
+              <ul class="list-unstyled">
+                  <li><a href="#">Blog</a></li>
+                  <li><a href="#">Mejores prácticas</a></li>
+                  <li><a href="#">Soporte</a></li>
+              </ul>
+          </div>
+      </div>
+      <div class="d-flex justify-content-center mb-3">
+          <a href="#" class="mx-2"><img src="https://img.icons8.com/ios-filled/50/000000/github.png" alt="GitHub" width="30"></a>
+          <a href="#" class="mx-2"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn" width="30"></a>
+          <a href="#" class="mx-2"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter" width="30"></a>
+      </div>
+      <p class="mt-3">&copy; 2024 Solid Steel. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<script>
+  function toggleSearch() {
+      var searchSection = document.getElementById("advancedSearch");
+      var menuIcon = document.getElementById("menuIcon");
+      if (searchSection.style.display === "none" || searchSection.style.display === "") {
+          searchSection.style.display = "block";
+          menuIcon.classList.remove("fa-bars");
+          menuIcon.classList.add("fa-times");
+      } else {
+          searchSection.style.display = "none";
+          menuIcon.classList.remove("fa-times");
+          menuIcon.classList.add("fa-bars");
+      }
+  }
+
+
+  // Función para verificar el tamaño de la pantalla y ajustar la visibilidad del menú
+function checkScreenSize() {
+  var searchSection = document.getElementById("advancedSearch");
+  if (window.innerWidth >= 768) {
+      // Mostrar el menú en pantallas grandes
+      searchSection.style.display = "block";
+  } else {
+      // Ocultar el menú en pantallas pequeñas
+      searchSection.style.display = "none";
+  }
+}
+
+// Añade el evento de redimensión
+window.addEventListener("resize", checkScreenSize);
+
+// Ejecuta la función al cargar la página para ajustar la visibilidad inicial
+checkScreenSize();
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+{% extends "base_without_image.html" %}
+
+{% block title %}Detalle del Producto - Solid Steel{% endblock %}
+
+{% block content %}
+<style>
+    .imagen-producto{
+        width:300px;
+        object-fit: cover;
+    }
+    a {
+        text-decoration: none; 
+        color: inherit;         
+    }
+    @media (min-width: 768px) {
+        .col-md-4 {
+            flex: 0 0 auto;
+            width: auto;
+        }
+    }
+
+    @media (max-width: 767.9px) {
+    .imagen-producto{
+        width:100%;
+        height:504px !important;
+    }
+       
+    }
+    
+</style>
+{% if messages %}
+    <div class="alert alert-warning" role="alert">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="tarjeta" style="padding: 20px; margin: 0 20px"> 
+    <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'product_list' %}'" style="margin-bottom: 20px;">
+        <span class="me-1">&larr;</span> Volver
+    </button>      
+    <div class="card mb-3" style="border: none">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ product_info.product_image.url }}" class="img-fluid h-100 imagen-producto" alt="{{ product_info.product_name }}">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h7 class="card-title">{{ product_info.product_name }}</h7>
+                    <h3 class="card-title">${{ product_info.product_price }}</h3>
+                    <p class="card-text">{{ product_info.product_material }} &nbsp; • &nbsp;
+                        {{ product_info.product_description }} &nbsp; • &nbsp;
+                        Espesor: {{ product_info.product_thickness }}
+                    </p>
+
+                    
+
+                    <!-- Formulario para agregar el producto al carrito -->
+                    <form method="POST" action="{% url 'agregar_al_carrito' product_info.id_product %}">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" id="cantidad" name="cantidad" min="1" value="1" class="form-control" required>
+                            <button class="btn btn-primary" type="submit" style="background-color: #2C2C2C; border-color: #2C2C2C">
+                                Agregar al carrito
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Botón para agregar el producto a la lista de deseos -->
+                    <div class="d-grid gap-2 mt-3">
+                        <form method="POST" action="{% url 'add_to_wishlist' product_info.id_product %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary bi bi-bookmark-heart-fill"> </button>
+                        </form>
+                        <p id="wishlist-message" class="mt-2 text-success" style="display: none;">¡Producto añadido a favoritos!</p>
+                    </div>
+
+                    <div class="accordion mt-3" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                        aria-controls="panelsStayOpen-collapseOne">
+                                    <strong>Envio por parte del vendedor</strong>
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    El envío será realizado por el vendedor, se proporcionará una clave de seguimiento y
+                                    se podrá visualizar la etapa de la gestión del mismo.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addToWishlist(productId) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch(`/wishlist/add/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('wishlist-message').style.display = 'block';
+            } else {
+                alert('No se pudo añadir el producto a tu lista de deseos.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
+<!-- Productos Similares -->
+<div style="padding: 20px; margin: 0 20px">
+    <h4>Productos Similares</h4>
+    <p>Otras Opciones</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        {% for Product in productos|slice:":3" %}
+            <div class="col-sm-4">
+                <a href="{% url 'product_detail' Product.id_product %}" >
+                <div class="card" style="width: 100%; height:95%;">
+                    <img src="{{ Product.product_image.url }}" class="card-img-top" alt="{{ Product.product_name }}" style=" width:100%; max-width: 400px; height:210px; object-fit: cover;">
+                    <div class="card-body" style="padding: 10px;">
+                        <h6 class="card-title">{{ Product.product_name }}</h6>
+                        <p class="card-text">$&nbsp;{{ Product.product_price }}</p>
+                    </div>
+                </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

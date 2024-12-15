@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Solid Steel</title>
+    <!-- Cargar carpeta statics -->
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'general/css/style_general.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'general/images/logo.png' %}">
+</head>
+<body>
+    <style>
+        /* Lo nuevo */
+.container {
+    padding: 20px 40px;
+}
+h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+/* Estilo de la tarjeta */
+.card {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    perspective: 1000px;
+    box-shadow: 0 0 0 5px #ffffff80;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+}
+/* Ajustar márgenes para texto centrado */
+h2, p {
+    margin: 0 auto 20px auto; /* Centra y separa los textos del encabezado */
+}
+.card svg {
+    width: 48px;
+    fill: #333;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+.card__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    transform: rotateX(-90deg);
+    transform-origin: bottom;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card:hover .card__content {
+    transform: rotateX(0deg);
+}
+.card__title {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+}
+.card:hover svg {
+    scale: 0;
+}
+.card__description {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: #777;
+    line-height: 1.4;
+}
+.card-img {
+    width: 220px; /* Hace que la imagen ocupe todo el ancho de la tarjeta */
+    height: 200px; /* Mantiene la proporción original de la imagen */
+    border-radius: 10px; /* Bordes redondeados */
+    object-fit: contain; /* Ajusta la imagen dentro del contenedor sin recortar */
+    padding: 10px; /* Añade un poco de espacio alrededor si es necesario */
+}
+.btn-floating {
+    background-color: #6c757d; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50px;
+    padding: 10px 15px;
+    z-index: 1000;
+}
+.btn-floating:hover {
+    background-color: #1d1b1b;
+}
+.card-img-top {
+    max-height: 80px; /* Ajusta la altura máxima de la imagen */
+    object-fit: contain; /* Asegura que la imagen mantenga su proporción */
+    padding: 10px; /* Añade algo de espacio alrededor de la imagen */
+}
+
+@media (max-width: 1200px) {
+    .card {
+        width: 230px; /* Ajusta el ancho para pantallas pequeñas */
+    }
+
+}
+
+@media (max-width: 900px) {
+    .card {
+        margin: 10px auto; /* Agrega margen automático y separa las tarjetas */
+        width: 280px; /* Ajusta el ancho para pantallas pequeñas */
+    }
+
+    .row.text-center {
+        gap: 20px; /* Espaciado entre filas de tarjetas */
+    }
+
+    .col-md-4, .col-md-6, .col-lg-3 {
+        margin-bottom: 20px; /* Espacio inferior entre columnas */
+    }
+}
+
+    </style>
+    <header class="bg-dark text-white text-center py-3">
+    </header>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-outline-dark mx-2" onclick="window.location.href='{% url 'client_login' %}'">Iniciar sesión</button>
+            <button class="btn btn-dark mx-2" onclick="window.location.href='{% url 'client_register' %}'">Registrarse</button>
+        </div>
+
+        <section class="mt-5 "> 
+            <h2 class="text-center">Acerca de Nuestros Proveedores</h2>
+            <p class="text-center">¡Contamos con un amplio catálogo proporcionado por nuestros colaboradores! Calidad, seguridad y precios competitivos.</p>
+
+            <div class="d-flex justify-content-center row text-center py-4 mt-5 ">
+
+                <div class="col-lg-3 col-md-6" style="margin: 10px;" style="flex-wrap: wrap; gap: 10px;">
+                    <div class="card justify-content-center" >
+                        <img src="{% static 'images/logo-cofiasa.png' %}" class="card-img" alt="Imagen de COFIASA">
+                        <div class="card__content">
+                            <p class="card__title">COFIASA</p>
+                            <p class="card__description">Distribuidor de productos de acero para grandes obras de construcción, herrerías, sector gubernamental, ferreterías, industrias y minas.</p>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-lg-3 col-md-4" style="margin: 10px;">
+                <div class="card">
+                    <img src="{% static 'images/logo-kalisch.png' %}" class="card-img" alt="Imagen de COFIASA">
+                    <div class="card__content">
+                        <p class="card__title">Kalisch Acero</p>
+                        <p class="card__description">Empresa mexicana líder en la comercialización de acero, ferretería y servicios de habilitado, con más de 40 años de experiencia en el mercado.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" style="margin: 10px;">
+                <div class="card">
+                    <img src="{% static 'images/logo-dalsa.png' %}" class="card-img" alt="Imagen de COFIASA">
+                    <div class="card__content">
+                        <p class="card__title">Dalsa</p>
+                        <p class="card__description">Empresa dedicada a la venta de acero para la industria y la construcción, incluyendo varilla corrugada, perfiles comerciales y aceros para herrería.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div>
+         
+        <section class="mt-5 ">
+            <h2 class="text-center">¡Puedes reciclar y nosotros te ayudamos a saber con quiénes hacerlo!</h2>
+            <p class="text-center text-muted">El reciclaje de metales no solo ayuda a conservar los recursos naturales, sino que también reduce las emisiones contaminantes.</p>
+
+            <div class="d-flex justify-content-center row text-center py-4 mt-5 ">
+                <div class="col-lg-3 col-md-6 " style="margin: 10px;">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Reciclados MORLIM</h5>
+                            <p class="card-text">Empresa de reciclaje
+                                en Ciudad Juárez con soluciones responsables.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4" style="margin: 10px;">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">REOMCA</h5>
+                            <p class="card-text">Recicladora con más de 10 años de experiencia en el reciclaje de plásticos, metales, cartón y madera.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" style="margin: 10px;">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">RECODI Group</h5>
+                            <p class="card-text">Empresa líder en soluciones integrales para el manejo de materiales reciclables.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </section>
+
+
+    <div class="text-center mt-4">
+        <a href="{% url 'recycler' %}" class="btn btn-outline-dark mx-2">Más información</a>
+    </div>
+
+    <a href="{% url 'supplier_login' %}" class="btn btn-primary btn-floating">
+        ¿Eres proveedor? ¡Inicia sesión aquí!
+    </a>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Casos de uso</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#"  >Diseño UI</a></li>
+                        <li><a href="#"  >Diseño UX</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Explorar</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#"  >Diseño</a></li>
+                        <li><a href="#"  >Prototipado</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Recursos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#"  >Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mb-3">
+                <a href="#" class="mx-2"><img src="https://img.icons8.com/ios-filled/50/000000/github.png" alt="GitHub" width="30"></a>
+                <a href="#" class="mx-2"><img src="https://img.icons8.com/ios-filled/50/000000/linkedin.png" alt="LinkedIn" width="30"></a>
+                <a href="#" class="mx-2"><img src="https://img.icons8.com/ios-filled/50/000000/twitter.png" alt="Twitter" width="30"></a>
+            </div>
+            <p class="mt-3">&copy; 2024 Solid Steel. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+</body>
+</html>

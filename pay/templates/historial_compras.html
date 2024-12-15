@@ -1,0 +1,43 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}Historial de Compras - Solid Steel{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'general/css/style_general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hc.css' %}">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+  <div class="header-content" style="text-align: left !important;">
+
+    <h2 class="title-left" style="margin-bottom: 20px !important;">
+      Historial de Compras para {{ client.client_first_name }} {{ client.client_last_name }}
+    </h2>
+  </div>
+
+  {% for orden_total in ordenes_totales %}
+  <div class="shipments-container mb-4 p-3 shadow-sm" style="border: 1px solid #ddd; border-radius: 8px;">
+    <h3>Compra realizada el {{ orden_total.orden.order_date|date:"d/m/Y H:i" }}</h3>
+    <ul>
+      {% for item in orden_total.items %}
+      <li>
+        <p><strong>Producto:</strong> {{ item.product_name }}</p>
+        <p><strong>Cantidad:</strong> {{ item.quantity }}</p>
+        <p><strong>Precio Unitario:</strong> ${{ item.price_at_purchase }}</p>
+        <p><strong>Subtotal producto:</strong> ${{ item.subtotal }}</p>
+      </li>
+      <hr>
+      {% endfor %}
+    </ul>
+    <p><strong>Total de la Orden:</strong> ${{ orden_total.total }}</p>
+  </div>
+  {% empty %}
+    <p>No se encontraron compras registradas para este cliente.</p>
+  {% endfor %}
+{% endblock %}

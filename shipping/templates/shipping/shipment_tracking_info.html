@@ -1,0 +1,43 @@
+{% extends "base_without_image.html" %}
+{% load static %}
+
+{% block title %}Envíos pendientes - Solid Steel{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'general/css/style_general.css' %}">
+    <link rel="stylesheet" href="{% static 'general/tracking_style.css' %}">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+  <div class="header-content" style="margin-left: 30px; text-align: left !important;">
+
+    <h2 class="title-left">
+      Información de Envío para {{ client.client_first_name }} {{ client.client_last_name }}
+    </h2>
+  </div>
+
+  {% for shipment_record in shipments %}
+  <div class="shipments-container">
+    <h3>Envío pendiente:</h3>
+    <p><strong>Número de Seguimiento:</strong> {{ shipment_record.shipment_tracking_number }}</p>
+    <p><strong>Transportista:</strong> {{ shipment_record.shipment_carrier }}</p>
+    <p><strong>Estado:</strong> {{ shipment_record.shipment_status }}</p>
+    <p><strong>Fecha de Envío:</strong> {{ shipment_record.shipment_date|date:"d/m/Y H:i" }}</p>
+    <p><strong>Fecha Estimada de Entrega:</strong> {{ shipment_record.shipment_estimated_delivery_date|date:"d/m/Y H:i" }}</p>
+    <p><strong>Fecha de Entrega Real:</strong> 
+      {% if shipment_record.shipment_actual_delivery_date %}
+        {{ shipment_record.shipment_actual_delivery_date|date:"d/m/Y H:i" }}
+      {% else %}
+        No entregado aún
+      {% endif %}
+    </p>
+    <hr>
+  </div>
+  {% empty %}
+    <p>No se encontraron envíos para este cliente.</p>
+  {% endfor %}
+{% endblock %}

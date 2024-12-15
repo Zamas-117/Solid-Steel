@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-image: url('path-to-your-image.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #000;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #000;
+    color: #fff;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+footer ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+footer p {
+    font-weight: bold;
+}
+
+footer ul li {
+    color: #ccc;
+}
+
+footer ul li:hover {
+    color: #fff;
+}

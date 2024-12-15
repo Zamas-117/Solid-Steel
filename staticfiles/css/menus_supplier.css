@@ -1,0 +1,125 @@
+.botones {
+    background-color: #E3E3E3;
+    border-color: #767676;
+    color: #1E1E1E;
+}
+
+
+
+.cantidad:active,
+.cantidad:focus {
+    background-color: #E3E3E3 !important;
+    border-color: #767676 !important;
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+.botones:hover {
+    background-color: #767676;
+    border-color: #767676;
+}
+
+.botones:active,
+.botones:focus {
+    background-color: #767676 !important;
+    border-color: #767676 !important;
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+.opciones{
+    background-color: white;
+}
+
+.opciones:hover{
+    background-color: #E3E3E3;
+    border-color: #E3E3E3;
+}
+
+.header-botones {
+    margin: 15px 0px;
+}
+
+.cartas {
+    margin: 10px 0;
+    height: auto;
+}
+
+.description {
+    font-size: 80%;
+    color: #767676;
+}
+
+.principal{
+    font-size: 95%;
+}
+
+.margen {
+    margin: 5vh auto; 
+}
+
+.ajustar{
+    width: 85%;
+    
+}
+
+.bloque{
+    max-width: 3%;
+}
+
+/* Aumentar el tamaño de los labels */
+label {
+    font-size: 1.1em !important;  /* Ajusta el tamaño según sea necesario */
+    margin-top: 15px !important;
+}
+
+/* Estilizar los mensajes de error */
+.error-message {
+    color: red !important;
+    font-size: 0.9em !important;  /* Tamaño de fuente para los mensajes de error */
+    margin-top: 5px !important;   /* Espacio entre el input y el mensaje de error */
+}
+
+
+.dato-entrada {
+    width: 80% !important; 
+    background-color: white !important;
+    color: #1E1E1E;
+    
+}
+@media (min-width: 992px) {
+    .margen {
+        margin: 5vh 10vw;
+    }
+}
+
+@media (max-width: 576px) {
+    .margen {
+        margin: 5vh 5vw; 
+    }
+
+    .cartas {
+        width: 100%;
+    }
+}
+
+/* update product.html */
+.img-fluid {
+    max-width: 100%;
+    height: auto; /* Mantiene la proporción de la imagen */
+    object-fit: cover; /* Recorta la imagen para que se ajuste al contenedor */
+}
+
+.card .col-md-4 img {
+    height: 244px; /* Ajusta la altura para que todas las imágenes sean uniformes */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    object-fit: cover; /* Ajusta la imagen al contenedor manteniendo las proporciones */
+}
+
+@media (max-width: 990px) {
+    .card .col-md-4 {
+        display: flex;
+        justify-content: center; /* Centra horizontalmente la imagen */
+        align-items: center; /* Centra verticalmente si es necesario */
+    }
+}

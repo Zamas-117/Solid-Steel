@@ -1,0 +1,73 @@
+/* Limitar el ancho del contenedor de movimientos */
+.container-movimientos {
+    max-width: 800px; /* Ajusta el ancho máximo */
+    margin: 0 auto;   /* Centrar el contenedor horizontalmente */
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Lista de movimientos */
+.movimientos-lista {
+    list-style: none;
+    padding: 0;
+}
+
+/* Ajustes de estilo para cada ítem en la lista */
+.movimiento-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.movimiento-tipo {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+}
+
+.movimiento-id {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: #6c757d;
+}
+
+.movimiento-monto {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-left: 20px;
+}
+
+.movimiento-monto.positivo {
+    color: green;
+}
+
+.movimiento-monto.negativo {
+    color: #ffa500; /* Naranja para los valores negativos */
+}
+
+/* Estilos para el enlace "Ver todos" */
+.link-all-movimientos {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+    text-align: center; /* Centrar */
+    margin-top: 15px;   /* Espacio superior */
+}
+
+.link-all-movimientos:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Azul más oscuro */
+}
+
+.section-title h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}

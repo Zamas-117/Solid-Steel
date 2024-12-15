@@ -1,0 +1,104 @@
+/* Estilos generales para el contenedor principal */
+.main-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+/* Estilos compartidos para metas, movimientos y saldo */
+.metas, .movimientos, .saldo {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos de cada sección */
+.metas h2, .movimientos h2, .saldo h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Sección de movimientos */
+.movimientos ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.movimientos ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.movimientos .monto {
+    font-weight: bold;
+}
+
+.movimientos .positivo {
+    color: green;
+}
+
+.movimientos .negativo {
+    color: #ffa500; /* Naranja para los valores negativos */
+}
+
+/* Estilos de saldo */
+.saldo .saldo-info {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.saldo .saldo-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.saldo .saldo-cantidad {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.button-refresh, .button-continue {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    color: black;
+    border: none;
+    margin-top: 10px;
+}
+
+.button-refresh:hover, .button-continue:hover {
+    background-color: #bdbdbd;
+}
+
+/* Estilos para el enlace de ver todos los movimientos */
+.link-all-movimientos {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    margin-top: 15px;
+}
+
+.link-all-movimientos:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+/* Ajustes para la visualización en dispositivos móviles */
+@media (max-width: 768px) {
+    .movimientos, .saldo {
+        margin-bottom: 20px;
+    }
+}

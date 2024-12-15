@@ -1,0 +1,102 @@
+/* Estilos generales para el contenedor principal */
+.main-container {
+    background-color: #f8f9fa;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+/* Título de confirmación */
+.title-success {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Contenedor de la tabla de confirmación */
+.container-confirmacion {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 100%;
+    max-width: 800px; /* Limitar el ancho máximo */
+    margin: 0 auto;   /* Centrar el contenedor horizontalmente */
+}
+
+/* Estilos de la tabla */
+.table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table th {
+    text-align: left;
+    padding: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.table td {
+    text-align: right;
+    padding: 10px;
+    color: #555;
+}
+
+.table th, .table td {
+    border-top: none;
+}
+
+/* Botón de finalizar */
+.finalizar-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.finalizar-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos adicionales */
+.text-center h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.mt-4 {
+    margin-top: 30px;
+}
+
+/* Ajustes para el efecto de centrado vertical */
+.main-container {
+    min-height: 100vh; /* Asegura que el contenido esté centrado verticalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-center {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en columna */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+}
+
+.check-icon {
+    display: flex;
+    align-items: center; /* Centra verticalmente el ícono */
+    justify-content: center; /* Centra horizontalmente el ícono */
+    margin-bottom: 30px;
+}

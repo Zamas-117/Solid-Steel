@@ -1,0 +1,12 @@
+/* Aumentar el tamaño de los labels */
+label {
+    font-size: 1.2em;  /* Ajusta el tamaño según sea necesario */
+    font-weight: bold; /* Esto hará que el texto sea más grueso */
+}
+
+/* Estilizar los mensajes de error */
+.error-message {
+    color: red;
+    font-size: 0.9em;  /* Tamaño de fuente para los mensajes de error */
+    margin-top: 5px;   /* Espacio entre el input y el mensaje de error */
+}

@@ -1,0 +1,136 @@
+{% extends "base_supplier.html" %}
+
+{% block title %}Editar Retiro de Saldo - Solid Steel{% endblock %}
+
+{% block header %}
+<head>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'general/css/style_general_supplier.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<style>
+    /* Clase personalizada para el margen superior */
+.mg-top-15px {
+    margin-top: 15px;
+}
+
+/* Color del botón y efecto de hover */
+.btn-primary {
+    background-color: #363738;
+    border-color: #363738;
+    transition: background-color 0.3s;
+}
+
+/* Efecto cuando el botón está activo */
+.btn-primary.active {
+    background-color: #404041;
+    border-color: #363738;
+    color: white;
+}
+
+/* Efecto cuando se pasa el cursor por encima */
+.btn-primary:hover {
+    background-color: #e3e6e9;
+    border-color: #e5e6e7;
+    color: rgb(54, 52, 52);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-left">
+        <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'saldo_view' %}'">
+            <span class="me-1">&larr;</span> Volver
+        </button>
+    </div>
+    
+<main class="container mt-5">
+    <div class="card-header text-center text-black">
+        <h2>Editar Retiro de Saldo</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form id="paymentForm" method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3 mg-top-15px">
+                            <label for="id_supplier_payment_method">{{ form.supplier_payment_method.label }}</label>
+                            <select id="id_supplier_payment_method" name="supplier_payment_method" class="form-control" required>
+                                <option value="" selected disabled>Seleccione un método de pago</option>
+                                {% for choice in form.supplier_payment_method.field.choices %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == form.supplier_payment_method.value %}selected{% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Por favor, seleccione un método de pago.</div>
+                        </div>
+                        <div class="mb-3 mg-top-15px">
+                            <label for="id_supplier_payment_email">{{ form.supplier_payment_email.label }}</label>
+                            <input type="email" id="id_supplier_payment_email" name="supplier_payment_email" value="{{ form.supplier_payment_email.value }}" class="form-control" required pattern="^[^\']+$">
+                            <div class="invalid-feedback">Por favor, ingrese un email válido sin comillas simples.</div>
+                        </div>
+                        <div class="mb-3 mg-top-15px">
+                            <label for="id_supplier_payment_name">{{ form.supplier_payment_name.label }}</label>
+                            <input type="text" id="id_supplier_payment_name" name="supplier_payment_name" value="{{ form.supplier_payment_name.value }}" class="form-control" required pattern="^[a-zA-Z0-9\s]{1,50}$">
+                            <div class="invalid-feedback">El nombre debe contener solo letras, números y espacios, y no debe exceder los 50 caracteres.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Guardar Método de Pago</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <p class="mt-3">&copy; 2024 Solid Steel. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // Validación del formulario
+    document.getElementById('paymentForm').addEventListener('submit', function(event) {
+        // Obtenemos todos los campos del formulario
+        var form = this;
+        var isValid = true;
+
+        // Validar método de pago
+        var paymentMethod = form.supplier_payment_method;
+        if (!paymentMethod.value) {
+            paymentMethod.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            paymentMethod.classList.remove('is-invalid');
+        }
+
+        // Validar email
+        var email = form.supplier_payment_email;
+        var emailPattern = /^[^\']+$/;
+        if (!email.value || !emailPattern.test(email.value)) {
+            email.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            email.classList.remove('is-invalid');
+        }
+
+        // Validar nombre de cuenta PayPal
+        var accountName = form.supplier_payment_name;
+        var accountNamePattern = /^[a-zA-Z0-9\s]{1,50}$/;
+        if (!accountName.value || !accountNamePattern.test(accountName.value)) {
+            accountName.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            accountName.classList.remove('is-invalid');
+        }
+
+        // Si hay errores, evitamos que se envíe el formulario
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+</script>
+{% endblock %}
+

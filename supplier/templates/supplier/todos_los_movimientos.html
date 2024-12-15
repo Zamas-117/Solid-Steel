@@ -1,0 +1,50 @@
+{% extends "supplier/saldo.html" %}
+
+{% load static %}
+
+{% block title %}Todos los Movimientos{% endblock %}
+
+{% block content %}
+<!-- Enlace al archivo CSS específico para esta sección -->
+<link rel="stylesheet" href="{% static 'css/movimientos.css' %}">
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-left">
+        <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'saldo_view' %}'">
+            <span class="me-1">&larr;</span> Volver
+        </button>
+    </div>
+<main class="main-container">
+    <div class="container-movimientos">
+        <div class="section-title">
+            <h1>Movimientos</h1>
+        </div>
+        <ul class="movimientos-lista">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Monto Ganado</th>
+                        <th>Fecha de Transacción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.product_name }}</td>
+                        <td>+&nbsp;${{ transaction.amount_earned }}</td>
+                        <td>{{ transaction.transaction_date }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No hay transacciones recientes.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </ul>
+    </div>
+</main>
+{% endblock %}
+
+

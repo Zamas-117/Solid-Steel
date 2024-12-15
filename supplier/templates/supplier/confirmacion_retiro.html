@@ -1,0 +1,67 @@
+{% extends "base_without_image.html" %}
+
+{% load static %}
+
+{% block title %}Confirmación de Retiro{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/confirmacion_retiro.css' %}">
+
+<main class="main-container">
+    <div class="text-center">
+        <h1 class="title-success">TRANSACCIÓN EXITOSA</h1>
+        <div class="check-icon" >
+            <i class="fas fa-check-circle" style="font-size: 100px; color: #28a745;"></i>
+        </div>        
+    </div>
+    <div class="container-confirmacion mt-5">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Estado de transacción</th>
+                    <td>En Proceso</td>
+                </tr>
+                <tr>
+                    <th>Nombre del comercio</th>
+                    <td>Cobro de Saldo Metal Steel</td>
+                </tr>
+                <tr>
+                    <th>Fecha de pago</th>
+                    <td>22 de Septiembre</td>
+                </tr>
+                <tr>
+                    <th>Hora de pago</th>
+                    <td>18:30</td>
+                </tr>
+                <tr>
+                    <th>ID de la transacción</th>
+                    <td>#12345678910</td>
+                </tr>
+                <tr>
+                    <th>CUS</th>
+                    <td>1234567891</td>
+                </tr>
+                <tr>
+                    <th>Cuenta</th>
+                    <td>asdaeredsass@####.com</td>
+                </tr>
+                <tr>
+                    <th>Método de pago</th>
+                    <td>Paypal Transacción</td>
+                </tr>
+                <tr>
+                    <th>Costo subtotal</th>
+                    <td>$150</td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <td><strong>$150</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary w-100 finalizar-btn">Finalizar</button>
+        </div>
+    </div>
+</main>
+{% endblock %}

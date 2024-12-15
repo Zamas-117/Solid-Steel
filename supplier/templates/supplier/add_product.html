@@ -1,0 +1,115 @@
+{% extends "base_supplier.html" %}
+
+{% block title %}Agregar Nuevo Producto{% endblock %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/menus_supplier.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="d-flex justify-content-left">
+                <button class="btn btn-outline-secondary" style="margin-top:20px;" onclick="window.location.href='{% url 'supplier_menu' %}'">
+                    <span class="me-1">&larr;</span> Volver
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title text-center">
+        <h2>Agregar Nuevo Producto</h2>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="id_product_name">Nombre del Producto:</label>
+                    {{ form.product_name }}
+                    {% for error in form.product_name.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_description">Descripción del Producto:</label>
+                    {{ form.product_description }}
+                    {% for error in form.product_description.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_price">Precio:</label>
+                    {{ form.product_price }}
+                    {% for error in form.product_price.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_stock">Cantidad en Inventario:</label>
+                    {{ form.product_stock }}
+                    {% for error in form.product_stock.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_image">Imagen del Producto:</label>
+                    {{ form.product_image }}
+                    {% for error in form.product_image.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_width">Ancho del Producto:</label>
+                    {{ form.product_width }}
+                    {% for error in form.product_width.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_height">Alto del Producto:</label>
+                    {{ form.product_height }}
+                    {% for error in form.product_height.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_thickness">Grosor del Producto:</label>
+                    {{ form.product_thickness }}
+                    {% for error in form.product_thickness.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_product_material">Material del Producto:</label>
+                    {{ form.product_material }}
+                    {% for error in form.product_material.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success mt-3 botones">Subir Producto</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+{% endblock %}

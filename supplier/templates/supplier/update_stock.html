@@ -1,0 +1,106 @@
+{% extends "base_supplier.html" %}
+
+{%block title%} Actualizar Stock{% endblock %}
+
+{%block head%}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/menus_supplier.css' %}">
+
+<!-- Agregar Font Awesome para el ícono de basura -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{%block content%}
+
+<!--Header del stock -->
+<div class="header-botones">
+  
+    <div class="container">
+
+    <div class="d-flex justify-content-left ">
+      <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'supplier_menu' %}'">
+          <span class="me-1">&larr;</span> Volver
+      </button>
+  </div>
+    </div> <!--container-->
+
+    </div>
+
+
+    {% if messages %}
+        <div class="list-group mt-3">
+            {% for message in messages %}
+                {% if 'edit' in message.tags %}
+                    <span class="list-group-item list-group-item-{{ message.tags }}">{{ message }}</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        
+<div class="section-title text-center">
+    <h2>Actualizar productos</h2>
+</div>
+
+
+<div>
+    <div class="container">
+    <div class="row">
+    <div class="col-md-1 bloque">
+        
+    </div>
+    <div class="col-md-10">
+      {% for Product in productos %}
+          <form method="POST" action="{% url 'update_stock' %}">  
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ Product.id_product }}">
+              <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ Product.product_image.url }}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                      <div class="col-md-8">
+                          <div class="card-body ">
+                            <h3 class="card-title principal">{{ Product.product_name }}</h3>
+                              <p class="card-text description">{{ Product.product_material }}&nbsp;-&nbsp;{{ Product.product_description }}&nbsp;-&nbsp;Espesor:&nbsp;{{ Product.product_thickness }}&nbsp;mm</p>
+                              <div class="container">
+                                  <div class="column align-items-center">
+                                    <div class="col-md-6">
+                                        <label class="card-title principal">Precio:&nbsp;</label>
+                                        <input type="number" class="form-control dato-entrada" name="new_price" min="1" step="1.00" required value="{{ Product.product_price }}">
+                                    </div>
+                                      <div class="col-md-6">
+                                          <label for="stockInput" class="form-label">Cantidad:</label>
+                                          <input type="number" class="form-control cantidad" name="new_stock" min="1" step="1" required value="{{ Product.product_stock }}">
+                                      </div>
+                                  </div>
+                                  
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              
+            <div class="d-flex justify-content-center mt-3">
+              <button type="submit" class="btn btn-secondary me-2" style="flex-shrink: 0; height:37.6px">Actualizar</button>
+          </form>
+          <form method="POST" action="{% url 'delete_product' %}" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ Product.id_product }}">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');"><i class="fas fa-trash-alt"></i> Eliminar</button>
+        </form>
+    </div>
+</div>
+
+      {% endfor %}
+  </div>
+  
+        
+    </div>
+    </div>
+    </div>
+</div>
+<script src="https://kit.fontawesome.com/c75f30fc9e.js" crossorigin="anonymous"></script>
+
+{% endblock %}

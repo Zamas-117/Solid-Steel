@@ -1,0 +1,92 @@
+
+{% extends "base_supplier.html" %}
+
+
+{%block title%} Saldo {%endblock%}
+
+{%block header%} 
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/saldo.css' %}">
+
+
+{%endblock%}
+
+    {% block content %}
+
+    
+    
+
+
+ 
+    <main class="main-container">
+        <div class="container">
+            <div class="row">
+        
+                <div class="col-md-2">
+                        
+                    <div class="d-flex justify-content-left ">
+        
+                        <button class="btn btn-outline-secondary" style="margin-top:20px;" onclick="window.location.href='{% url 'supplier_menu' %}'">
+                            <span class="me-1">&larr;</span> Volver
+                        </button>
+                    </div>
+                </div>
+                
+        
+            </div>
+            <div class="section-title text-center">
+                <h2>Saldo y Cuenta</h2>
+            </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row justify-content-center align-items-stretch"> <!-- align-items-stretch fuerza las columnas a tener la misma altura -->
+                <!-- Columna de Movimientos -->
+                <div class="col-md-6 col-lg-4 d-flex flex-column movimientos mx-lg-2"> <!-- Añadir flex-column para alinear el contenido internamente -->
+                    <h2>Ingresos</h2>
+                    
+                    <ul class="movimientos-lista flex-grow-1"> <!-- flex-grow-1 para que se extienda si es necesario -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad Vendida</th>
+                                    <th>Ganancia</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions|slice:":3"%}
+                                <tr>
+                                    <td>{{ transaction.product_name }}</td>
+                                    <td>{{ transaction.quantity_sold }}</td>
+                                    <td>+&nbsp;${{ transaction.amount_earned }}</td>
+                                    
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No hay transacciones recientes.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    <!-- Enlace para revisar todos los movimientos -->
+                    <a href="{% url 'todos_los_movimientos' %}" class="link-all-movimientos">Ver todos</a>
+                </div>
+        
+                <!-- Columna de Saldo -->
+                <div class="col-md-6 col-lg-4 d-flex flex-column saldo mx-lg-2"> <!-- flex-column para ajustar contenido -->
+                    <h2>Saldo</h2>
+                    <div class="saldo-info text-center flex-grow-1"> <!-- flex-grow-1 para mantener el tamaño equilibrado -->
+                        <i class="fas fa-wallet saldo-icon"></i> <!-- Icono de Font Awesome -->
+                        <span class="saldo-cantidad d-block">${{supplier.balance}}</span>
+                    </div>
+                    <button type="button" class="button-refresh w-100" onclick="window.location.href='{% url 'retirar_saldo' %}'">Retirar Saldo</button>
+                    <button type="button" class="button-continue w-100" onclick="window.location.href='/supplier/editar-retiro/'">Cambiar datos de Retiro</button>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    {% endblock %}

@@ -1,0 +1,133 @@
+{% extends "base_supplier.html" %}
+{% block title %}Retirar saldo{% endblock title %}
+
+{% block header %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/saldo.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Clase personalizada para el margen superior */
+    .mg-top-15px {
+        margin-top: 15px;
+    }
+    
+    /* Estilo del campo de entrada */
+    input.form-control {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+    
+    input.form-control:focus {
+        border-color: #363738;
+        outline: none;
+    }
+    
+    /* Ocultar las flechas de incremento/decremento en el campo de número */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield; /* Para Firefox */
+    }
+    
+    /* Estilo del botón */
+    .btn-primary {
+        background-color: #363738;
+        border-color: #363738;
+        color: white;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+    
+    .btn-primary:hover {
+        background-color: #2e2f30;
+        border-color: #2e2f30;
+        color: white;
+    }
+</style>
+
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-left">
+        <button class="btn btn-outline-secondary" onclick="window.location.href='{% url 'saldo_view' %}'">
+            <span class="me-1">&larr;</span> Volver
+        </button>
+    </div>
+    {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+<main class="container mt-5">
+    <div class="section-title text-center">
+        <h1>Retiro de saldo</h1>
+    </div>
+    <div class="row justify-content-center">
+        <!-- Sección del saldo y cuenta -->
+        <div class="col-md-5 saldo">
+            <h2 class="text-center">Saldo</h2>
+            <div class="saldo-info text-center">
+                <i class="fas fa-wallet saldo-icon"></i> <!-- Icono de la cartera -->
+                <span class="saldo-cantidad d-block" id="saldo">{{ supplier.balance }}</span>
+            </div>
+
+            <!-- Botones y campo de cantidad -->
+            <div class="mt-4">
+                <form id="withdrawForm" method="POST" action="{% url 'create_payout' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">Cantidad a Retirar:</label>
+                        <input type="number" id="cantidad" name="cantidad" min="0.01" step="0.01" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Retirar Dinero</button>
+                    <!-- Contenedor para el mensaje de error -->
+                    <div class="text-danger mt-2" id="error-message" style="display: none;"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sección de detalles -->
+        <div class="col-md-4 detalles-titular">
+            <h5 class="fw-bold">Nombre del titular</h5>
+            <p>{{ pago.supplier_payment_name }}</p>
+            <h5 class="fw-bold">Cuenta de Paypal</h5>
+            <p>{{ pago.supplier_payment_email }}</p>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.getElementById('withdrawForm').addEventListener('submit', function(event) {
+        // Obtener el saldo y la cantidad a retirar
+        var saldoDisponible = parseFloat(document.getElementById('saldo').textContent);
+        var cantidadRetirar = parseFloat(document.getElementById('cantidad').value);
+
+        // Validar si la cantidad a retirar es válida y si hay suficiente saldo
+        if (isNaN(cantidadRetirar) || cantidadRetirar <= 0 || cantidadRetirar > saldoDisponible) {
+            event.preventDefault(); // Evitar que se envíe el formulario
+            var errorMessage = "No tienes suficiente saldo para retirar esta cantidad.";
+            if (isNaN(cantidadRetirar) || cantidadRetirar <= 0) {
+                errorMessage = "Por favor, ingrese una cantidad válida para retirar.";
+            }
+            document.getElementById('error-message').textContent = errorMessage;
+            document.getElementById('error-message').style.display = "block";
+        } else {
+            document.getElementById('error-message').style.display = "none";
+        }
+    });
+</script>
+
+{% endblock %}

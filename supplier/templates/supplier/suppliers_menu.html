@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends "base_supplier.html" %}
+
+{% block title %} Menu de Provedores {% endblock %}
+
+
+{% block content %}
+
+
+
+<!--Header botones-->
+<div class="header-botones ">
+    <div class="container">
+        <div class="row">
+            <!--Sección del logo-->
+            <div class="section-title text-center">
+                <h2>Cátalogo</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cartas de productos -->
+<div class="margen">
+    <div class="container">
+        <div class="row">
+            {% for Product in productos %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <a href=" {% url 'update_stock'  %}" class="text-decoration-none">
+                    <div class="card cartas">
+                        <img src="{{Product.product_image.url}}" style="width: 100%; height: 244.4px;"class="card-img-top">
+                        <div class="card-body">
+                            <h6 class="card-title text-center">Cantidad {{Product.product_stock}}</h6>
+                            <p class="card-text description">{{Product.product_name}} - {{Product.product_height}} - {{Product.product_thickness}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
